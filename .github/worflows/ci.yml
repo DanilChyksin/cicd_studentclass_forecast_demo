@@ -23,6 +23,7 @@ jobs:
     steps:
       - name: скачивание репозитория
         uses: actions/checkout@v4
+
       - name: сохранение артефакта на виртуальной машине
         run: zip -r weather-report-app.zip . -x "*.git*" "node_modules/*"
       - name: сохраняем артефакт в системе гит
