@@ -1,0 +1,34 @@
+name: test and build
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: скачивание репозитория
+        uses: actions/checkout@v4
+      - name: установка Node js
+        uses: actions/setup-node@v4
+      - name: установка зависимостей
+        run: npm install
+      - name: запуск тестов
+        run: npm test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: скачивание репозитория
+        uses: actions/checkout@v4
+
+      - name: сохранение артефакта на виртуальной машине
+        run: zip -r weather-report-app.zip . -x "*.git*" "node_modules/*"
+      - name: сохраняем артефакт в системе гит
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: weather-report-app.zip
+          retention-days: 7
